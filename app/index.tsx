@@ -15,10 +15,10 @@ import { SortButton } from "@/components/SortButton";
 export default function Index() {
     const colors = useThemeColors();
     const { data, isFetching, fetchNextPage } = useInfiniteFetchQuery("/pokemon?limit=21");
+    const [sortKey, setSortKey] = useState<"id"|"name">("id");
     const pokemons = data?.pages?.flatMap(page => page.results.map(p => ({...p, id: getPokemonId(p.url)}))) ?? [];
     const [search, setSearch] = useState(""); 
     const filteredPokemons = [...(search ? pokemons.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || getPokemonId(p.url).toString() === search) : pokemons)].sort((a, b) => a[sortKey] < b[sortKey] ? -1 : 1);
-    const [sortKey, setSortKey] = useState<"id"|"name">("id");
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: colors.tint }]}>
@@ -73,5 +73,8 @@ const styles = StyleSheet.create({
     },
     search: {
         gap: 16,
+    },
+    form: {
+        paddingHorizontal: 12,
     }
 });

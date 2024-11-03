@@ -1,7 +1,7 @@
 {
   "name": "pokedex",
   "main": "expo-router/entry",
-  "type": "commonjs",
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
