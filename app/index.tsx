@@ -1,33 +1,33 @@
 import { Card } from "@/components/Card";
 
 import { PokemonCard } from "@/components/pokemon/PokemonCard";
+import { RootView } from "@/components/RootView";
+import { Row } from "@/components/Row";
+import { SearchBar } from "@/components/SearchBar";
+import { SortButton } from "@/components/SortButton";
 import { ThemedText } from "@/components/ThemedText";
 import { getPokemonId } from "@/function/pokemon";
-import { useFetchQuery, useInfiniteFetchQuery } from "@/hooks/useFetchQuery";
-import { ActivityIndicator, FlatList, Image, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useThemeColors } from "../hooks/useThemeColors";
-import { SearchBar } from "@/components/SearchBar";
+import { useInfiniteFetchQuery } from "@/hooks/useFetchQuery";
 import { useState } from "react";
-import { Row } from "@/components/Row";
-import { SortButton } from "@/components/SortButton";
+import { ActivityIndicator, FlatList, Image, StyleSheet, View } from "react-native";
+import { useThemeColors } from "../hooks/useThemeColors";
 
 export default function Index() {
     const colors = useThemeColors();
     const { data, isFetching, fetchNextPage } = useInfiniteFetchQuery("/pokemon?limit=21");
-    const [sortKey, setSortKey] = useState<"id"|"name">("id");
-    const pokemons = data?.pages?.flatMap(page => page.results.map(p => ({...p, id: getPokemonId(p.url)}))) ?? [];
-    const [search, setSearch] = useState(""); 
+    const [sortKey, setSortKey] = useState<"id" | "name">("id");
+    const pokemons = data?.pages?.flatMap(page => page.results.map(p => ({ ...p, id: getPokemonId(p.url) }))) ?? [];
+    const [search, setSearch] = useState("");
     const filteredPokemons = [...(search ? pokemons.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || getPokemonId(p.url).toString() === search) : pokemons)].sort((a, b) => a[sortKey] < b[sortKey] ? -1 : 1);
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: colors.tint }]}>
+        <RootView>
             <Row gap={16} style={styles.header}>
                 <Image source={require('@/assets/images/pokeball.png')} width={24} height={24} />
                 <ThemedText variant="headline" color="grayLight">Pokedex</ThemedText>
             </Row>
             <View>
-                <Row style={styles.search}>
+                <Row style={styles.form} gap={16}>
                     <SearchBar value={search} onChange={setSearch} />
                     <SortButton value={sortKey} onChange={setSortKey} />
                 </Row>
@@ -46,7 +46,7 @@ export default function Index() {
                     showsVerticalScrollIndicator={false}
                     numColumns={3} />
             </Card>
-        </SafeAreaView>
+        </RootView>
     );
 }
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     header: {
         paddingHorizontal: 12,
-        paddingVertical: 8,
+        paddingBottom: 8,
     },
     body: {
         flex: 1,

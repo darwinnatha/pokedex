@@ -3,6 +3,7 @@ import { Link } from "expo-router";
 import { Image, Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import { Card } from "../Card";
 import { ThemedText } from "../ThemedText";
+import { getPokemonArtWork } from "@/function/pokemon";
 
 type Props = {
     id: number;
@@ -19,7 +20,7 @@ export function PokemonCard({ style, id, name }: Props) {
                 <Card style={ styles.card}>
                     <ThemedText variant="caption" style={styles.id} color="grayMedium">#{id.toString().padStart(3, '0')}</ThemedText>
                     <Image
-                        source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png` }}
+                        source={{ uri: getPokemonArtWork(id) }}
                         width={72}
                         height={72}
                     />

@@ -7,6 +7,7 @@ import { Radio } from "./Radio";
 import { Row } from "./Row";
 import { ThemedText } from "./ThemedText";
 
+
 type Props = {
     value: "id" | "name";
     onChange: (sort: "id" | "name") => void;
@@ -28,11 +29,9 @@ export function SortButton({ value, onChange }: Props) {
                 top: y + height,
                 right: Dimensions.get("window").width - x - width
             });
-            console.log(position);
-
+            setModalVisibility(true);
 
         })
-        setModalVisibility(true);
     }
     const onClose = () => {
         setModalVisibility(false);
@@ -41,13 +40,20 @@ export function SortButton({ value, onChange }: Props) {
     return (
         <>
             <Pressable onPress={onButtonPress}>
-                <View style={[styles.button, { backgroundColor: colors.grayWhite }]}>
-                    <Image source={value === 'id' ? require('@/assets/images/number.png') : require('@/assets/images/alpha.png')} width={16} height={16} />
+                <View ref={buttonRef} style={[styles.button, { backgroundColor: colors.grayWhite }]}>
+                    <Image
+                        width={16}
+                        height={16}
+                        source={
+                            value === 'id'
+                                ? require('@/assets/images/number.png')
+                                : require('@/assets/images/alpha.png')}
+                    />
                 </View>
             </Pressable>
-            <Modal transparent visible={modalVisible} onRequestClose={onClose}>
+            <Modal animationType="fade" transparent visible={modalVisible} onRequestClose={onClose}>
                 <Pressable style={styles.backdrop} onPress={onClose}>
-                    <View ref={buttonRef} style={[styles.popup, { backgroundColor: colors.tint, ...position }]}>
+                    <View style={[styles.popup, { backgroundColor: colors.tint, ...position }]}>
                         <ThemedText variant="subtitle2" style={styles.title} color="grayWhite">Sort by:</ThemedText>
                         <Card style={styles.card}>
                             {options.map(option => (
