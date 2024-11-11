@@ -1,5 +1,4 @@
 import { Colors } from "@/constants/Color";
-import { types } from "@babel/core";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 const endpoint = "https://pokeapi.co/api/v2/";
@@ -21,19 +20,26 @@ type API = {
         height: number;
         moves: { move: { name: string } }[];
         stats: { base_stat: number, stat: { name: string } }[];
-        cries: { latest: string }[];
+        cries: { latest: string };
         types: { type: { name: keyof typeof Colors['type'] } }[];
+    },
+    '/pokemon-species/[id]': {
+        flavor_text_entries: {
+            flavor_text: string,
+            language: {
+                name: string
+            }
+        }[];
     }
 }
 
 export function useFetchQuery<T extends keyof API>(path: T, params?: Record<string, string | number>) {
 
     const localUrl = endpoint + Object.entries(params ?? {}).reduce(
-        (acc, [key, value]) => acc.replaceAll(`[${key}]`, value.toString()),  path);
+        (acc, [key, value]) => acc.replaceAll(`[${key}]`, value.toString()), path);
     return useQuery({
         queryKey: [localUrl],
         queryFn: async () => {
-            await wait(1);
             return fetch(localUrl, {
                 headers: {
                     "Content-Type": "application/json",
@@ -49,7 +55,6 @@ export function useInfiniteFetchQuery<T extends keyof API>(path: T) {
         queryKey: [path],
         initialPageParam: endpoint + path,
         queryFn: async ({ pageParam }) => {
-            await wait(1);
             return fetch(pageParam, {
                 headers: {
                     "Content-Type": "application/json",

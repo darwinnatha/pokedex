@@ -1,9 +1,9 @@
+import { getPokemonArtWork } from "@/function/pokemon";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { Link } from "expo-router";
 import { Image, Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import { Card } from "../Card";
 import { ThemedText } from "../ThemedText";
-import { getPokemonArtWork } from "@/function/pokemon";
 
 type Props = {
     id: number;
@@ -14,10 +14,10 @@ type Props = {
 export function PokemonCard({ style, id, name }: Props) {
     const colors = useThemeColors();
     return (
-        
+
         <Link href={{ pathname: "/pokemon/[id]", params: { id: id } }} asChild>
-            <Pressable android_ripple={{ color: colors.tint, foreground:true }} style={style}>
-                <Card style={ styles.card}>
+            <Pressable android_ripple={{ color: colors.tint, foreground: true }} style={style}>
+                <Card style={styles.card}>
                     <ThemedText variant="caption" style={styles.id} color="grayMedium">#{id.toString().padStart(3, '0')}</ThemedText>
                     <Image
                         source={{ uri: getPokemonArtWork(id) }}

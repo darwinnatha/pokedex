@@ -11,22 +11,22 @@ type Props = ViewProps & {
 export function PokemonSpec({ style, image, title, description, ...rest }: Props) {
     return (
         <View style={[style, styles.root]} {...rest}>
-            <Row style={styles.row}> 
+            <Row style={styles.row}>
                 {image && <Image source={image} width={24} height={24} />}
                 <ThemedText >{title}</ThemedText>
             </Row>
-                <ThemedText variant="caption" color="grayMedium">{description}</ThemedText>
+            <ThemedText variant="caption" color="grayMedium">{description}</ThemedText>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    root:{
+    root: {
         flex: 1,
         gap: 4,
         alignItems: 'center',
     },
-    row:{
+    row: {
         height: 32,
         alignItems: 'center',
     }
